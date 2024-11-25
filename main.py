@@ -26,9 +26,9 @@ def Dijkstra(C: np.matrix) -> np.matrix:
     # Pour chaque sommet comme source
     for source in range(N):
         # Tableau des plus courts chemins
-        pcc = [[np.inf, False] for _ in range(N)]
-        pcc[source][0] = 0 
-        pcc[source][1] = True
+        dist_est = [[np.inf, False] for _ in range(N)]
+        dist_est[source][0] = 0 
+        dist_est[source][1] = True
         sommet_u = source
         dist_u = 0  # Distance initiale pour le sommet source
         
@@ -40,29 +40,29 @@ def Dijkstra(C: np.matrix) -> np.matrix:
             
             # Relâchement (pour chaque sommet non visité)
             for k in range(N):
-                if pcc[k][1] == False:  # Si k n'a pas encore été sélectionné
+                if dist_est[k][1] == False:  # Si k n'a pas encore été sélectionné
                     dist_uv = C[sommet_u][k]  # Poids de l'arête (sommet_u, k)
                     dist_totale = dist_u + dist_uv  # Distance totale du chemin source -> ... -> u -> k
                     
                     # Mise à jour de la distance min pour k
-                    if dist_totale < pcc[k][0]:
-                        pcc[k][0] = dist_totale 
+                    if dist_totale < dist_est[k][0]:
+                        dist_est[k][0] = dist_totale 
             
                     # Mise à jour de la solution min à cette étape
-                    if pcc[k][0] < minimum:
-                        minimum = pcc[k][0]
+                    if dist_est[k][0] < minimum:
+                        minimum = dist_est[k][0]
                         prochain_sommet_select = k  # Prochain sommet à sélectionner
             
             # Mise à jour du sommet sélectionné et de la distance
             sommet_u = prochain_sommet_select
-            pcc[sommet_u][1] = True  # Passer le sommet en True pour le marquer comme visité
-            dist_u = pcc[sommet_u][0]  # Mettre à jour la distance du sommet sélectionné
+            dist_est[sommet_u][1] = True  # Passer le sommet en True pour le marquer comme visité
+            dist_u = dist_est[sommet_u][0]  # Mettre à jour la distance du sommet sélectionné
             
             cpt += 1  # Incrémenter le compteur des sommets sélectionnés
         
         # Stockage des distances minimales depuis le sommet source dans la matrice D.
         for i in range(N):
-            D[source][i] = pcc[i][0]
+            D[source][i] = dist_est[i][0]
     
     return D
 
@@ -74,12 +74,12 @@ def Floyd_Warshall(C: np.matrix) -> np.matrix:
 
 def main():
     """
-    Fonction principale pour charger la matrice CSV, appliquer l'algorithme de Dijkstra et afficher les résultats.
+    Charger la matrice CSV, appliquer les algorithmes et afficher la matrice de cout et les résultats.
     """
-    # Charger la matrice de coûts depuis un fichier CSV
-    fichier = "graphe21.csv"  # Le fichier CSV contenant la matrice
+    fichier = "graphe21.csv"
+    # Convertir le csv en matrice np.array
     C = np.genfromtxt(fichier, delimiter=',', dtype='float64', filling_values=np.inf)
-    C = np.where(C == "inf", np.inf, C).astype(float)  # Convertir les "inf" en np.inf et les valeurs en float
+    C = np.where(C == "inf", np.inf, C).astype(float)
     
     print("Matrice des coûts :")
     print(C)
