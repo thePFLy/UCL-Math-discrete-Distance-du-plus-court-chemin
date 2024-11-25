@@ -1,12 +1,5 @@
 import numpy as np
 
-def charger_matrice_csv(fichier: str) -> np.matrix:
-    """
-    Récupère la matrice csv et la convertir avec numpy.
-    """
-    C = np.genfromtxt(fichier, delimiter=',', dtype='float64', filling_values=np.inf)
-    return C
-
 def Dijkstra(C: np.matrix) -> np.matrix:
     """
     Algorithme de Dijkstra pour trouver les plus courts chemins entre toutes les paires de sommets.
