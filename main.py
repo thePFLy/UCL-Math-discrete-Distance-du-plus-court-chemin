@@ -13,7 +13,7 @@ def Dijkstra(C: np.matrix) -> np.matrix:
     
     # Nombre de sommets du graphe
     N = np.size(C, 0)
-    # Initialiser la matrice des plus courts chemins avec l'infini
+    # Initialise la matrice des plus courts chemins avec l'infini
     D = np.full((N, N), np.inf)
     
     # Pour chaque sommet comme source
@@ -33,7 +33,7 @@ def Dijkstra(C: np.matrix) -> np.matrix:
             
             # Relâchement (pour chaque sommet non visité)
             for k in range(N):
-                if dist_est[k][1] == False:  # Si k n'a pas encore été sélectionné
+                if dist_est[k][1] == False:  # Si k pas encore été sélectionné
                     dist_uv = C[sommet_u][k]  # Poids de l'arête (sommet_u, k)
                     dist_totale = dist_u + dist_uv  # Distance totale du chemin source -> ... -> u -> k
                     
@@ -48,10 +48,10 @@ def Dijkstra(C: np.matrix) -> np.matrix:
             
             # Mise à jour du sommet sélectionné et de la distance
             sommet_u = prochain_sommet_select
-            dist_est[sommet_u][1] = True  # Passer le sommet en True pour le marquer comme visité
-            dist_u = dist_est[sommet_u][0]  # Mettre à jour la distance du sommet sélectionné
+            dist_est[sommet_u][1] = True  # Passe le sommet en True pour le marquer comme visité
+            dist_u = dist_est[sommet_u][0]  # Met à jour la distance du sommet sélectionné
             
-            cpt += 1  # Incrémenter le compteur des sommets sélectionnés
+            cpt += 1  # incrémente le compteur des sommets sélectionnés
         
         # Stockage des distances minimales depuis le sommet source dans la matrice D.
         for i in range(N):
@@ -70,7 +70,7 @@ def main():
     Charger la matrice CSV, appliquer les algorithmes et afficher la matrice de cout et les résultats.
     """
     fichier = "graphe21.csv"
-    # Convertir le csv en matrice np.array
+    # Convertion csv en matrice np.array
     C = np.genfromtxt(fichier, delimiter=',', dtype='float64', filling_values=np.inf)
     C = np.where(C == "inf", np.inf, C).astype(float)
     
@@ -89,6 +89,5 @@ def main():
     print("\nMatrice des plus courts chemins (Floyd Warshall) :")
     print(D_Floyd_Warshall)
 
-# Appeler la fonction principale
 if __name__ == "__main__":
     main()
