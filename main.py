@@ -60,7 +60,40 @@ def Dijkstra(C: np.matrix) -> np.matrix:
     return D
 
 def Bellman_Ford(C: np.matrix) -> np.matrix:
-    return
+    """
+    Algorithme de Bellman-Ford pour trouver les plus courts chemins d'un graphe pondéré.
+    
+    Paramètre:
+        Matrice n x n des coûts d'un graphe pondéré, où C[i][j] est le coût de l'arête entre i et j.
+        
+    Retourne:
+        Une matrice n × n D contenant les distances des plus courts chemins depuis chaque sommet source.
+    """
+    N = C.shape[0]
+    D = np.full((N, N), np.inf)
+
+    for source in range(N):
+        # Initialisation pour chaque source
+        dist = np.full(N, np.inf)
+        dist[source] = 0
+
+        # Relaxation des arêtes pour au maximum N-1 itérations
+        for _ in range(N - 1):
+            for u in range(N):
+                for v in range(N):
+                    if C[u, v] < np.inf and dist[u] + C[u, v] < dist[v]:
+                        dist[v] = dist[u] + C[u, v]
+
+        # Vérification des cycles négatifs
+        for u in range(N):
+            for v in range(N):
+                if C[u, v] < np.inf and dist[u] + C[u, v] < dist[v]:
+                    raise ValueError(f"Le graphe contient un cycle de poids négatif atteignable depuis le nœud {source}")
+
+        # Stockage des distances calculées
+        D[source, :] = dist
+
+    return D
 
 def Floyd_Warshall(C: np.matrix) -> np.matrix:
     return
